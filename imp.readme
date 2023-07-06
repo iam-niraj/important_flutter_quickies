@@ -1,0 +1,58 @@
+# To run animations smoothly, run app with following commands...(It's because your shaders are not precompiled. Skia engine performs better when shader's are precompiled. That will help you to avoid those janky frames.
+)
+
+-> flutter run --profile --cache-sksl --purge-persistent-cache
+Perform transitions and animation as much as possible in your app. Then PRESS M to save shader file eg. name.sksl.json
+
+Run to build your app with compiled shaders:-
+
+Android:
+-> flutter build apk --bundle-sksl-path flutter_01.sksl.json
+
+Ios:
+-> flutter build ios --bundle-sksl-path flutter_01.sksl.json
+
+Test release apk in your device.
+
+
+# To remove scroll glow...
+
+-> Create a new class such as:-
+
+import 'package:flutter/cupertino.dart';
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}
+
+-> Then add it to "scrollBehavior" under MaterialApp()
+
+MaterialApp(
+      scrollBehavior: MyBehavior(),
+      ...
+    );
+
+
+# To compile app when main.dart is located in another folder...
+
+-> flutter run lib/dev(your location)/main_dev.dart
+                   OR
+->flutter run -t lib/(your location)/main_dev.dart     
+                   OR
+Click "Add Configuration" and add the following or add manually inside ".vscode/launch.json":
+
+  "configurations": [
+
+    {
+      "name": "Flutter",
+      "request": "launch",
+      "type": "dart",
+      // "args": ["--enable-software-rendering"]
+      // "flutterMode": "profile", //debug //release 
+      #"program": "${workspaceFolder}/lib/main_dev.dart"
+    }
+  ]              
